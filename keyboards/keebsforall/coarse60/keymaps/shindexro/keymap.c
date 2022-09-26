@@ -3,19 +3,9 @@
 
 
 enum custom_keycodes {
-    SPAM_LEFT = SAFE_RANGE,
-    SPAM_RIGHT,
-    ALT_TAB,
+    ALT_TAB = SAFE_RANGE,
     GUI_SPACE,
 };
-
-struct SpamClick {
-    int click_interval[10];
-    int click_interval_index;
-    uint16_t last_click_timestamp;
-    bool active;
-} left_spam  = {{ 78, 102, 104, 62, 64, 104, 102, 85, 105, 89 }, 0, 0, false},
-  right_spam = {{ 78, 102, 104, 62, 64, 104, 102, 85, 105, 89 }, 0, 0, false};  // irregular intervals as an lazy anti-detection
 
 static bool is_alt_tab_active = false;
 static bool is_gui_space_active = false;
@@ -89,33 +79,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             unregister_code(KC_SPC);
         }
         break;
-
-        case BSPC_DEL:
-        if (record->event.pressed) {
-            uint8_t mods = get_mods();
-            // clear_mods();
-            // clear_oneshot_mods();
-            bspc_del_keycode = (mods | get_oneshot_mods()) & MOD_MASK_SHIFT ? KC_DEL : KC_BSPC;
-            register_code(bspc_del_keycode);
-            // set_mods(mods);
-        } else {
-            unregister_code(bspc_del_keycode);
-        }
-        break;
-
-        case SPAM_LEFT:
-        if (record->event.pressed) {
-            left_spam.active = !left_spam.active;
-            left_spam.last_click_timestamp = timer_read();
-        }
-        break;
-
-        case SPAM_RIGHT:
-        if (record->event.pressed) {
-            right_spam.active = !right_spam.active;
-            right_spam.last_click_timestamp = timer_read();
-        }
-        break;
     }
 
     return true;
@@ -148,21 +111,4 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     
     }
   return state;
-}
-
-void matrix_scan_user(void) {
-    if (left_spam.active && timer_elapsed(left_spam.last_click_timestamp) >= left_spam.click_interval[left_spam.click_interval_index]) {
-        left_spam.last_click_timestamp = timer_read();
-        SEND_STRING(SS_TAP(X_BTN1));
-        left_spam.click_interval_index++;
-        left_spam.click_interval_index %= 10;
-    }
-
-    if (right_spam.active && timer_elapsed(right_spam.last_click_timestamp) >= right_spam.click_interval[right_spam.click_interval_index]) {
-        right_spam.last_click_timestamp = timer_read();
-        SEND_STRING(SS_TAP(X_BTN2));
-        right_spam.click_interval_index++;
-        right_spam.click_interval_index %= 10;
-    }
-    
 }
