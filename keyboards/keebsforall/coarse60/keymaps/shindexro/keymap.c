@@ -10,11 +10,6 @@ enum custom_keycodes {
     BSPC_DEL,
 };
 
-enum tap_dance_codes {
-    MO_DANCE,
-    COLN_DANCE,
-};
-
 struct SpamClick {
     int click_interval[10];
     int click_interval_index;
@@ -26,27 +21,6 @@ struct SpamClick {
 static bool is_alt_tab_active = false;
 static bool is_gui_space_active = false;
 static uint16_t bspc_del_keycode = KC_BSPC;
-
-
-typedef enum {
-    TD_NONE,
-    TD_UNKNOWN,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_TAP,
-    TD_DOUBLE_HOLD,
-} td_state_t;
-
-typedef struct {
-    bool is_press_action;
-    td_state_t state;
-} td_tap_t;
-
-td_state_t cur_dance(qk_tap_dance_state_t *state);
-
-
-void mo_dance_finished(qk_tap_dance_state_t *state, void *user_data);
-void mo_dance_reset(qk_tap_dance_state_t *state, void *user_data);
 
 
 enum layers{
@@ -62,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_VOLU,     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,              KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,           KC_LBRC, KC_RBRC, KC_BSLS,
     KC_VOLD,     KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,        KC_QUOT,          KC_ENT,
                  KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,              KC_UNDS, KC_N,    KC_M,    KC_COMM, KC_DOT,         KC_SLSH, KC_RSFT, _______,
-                 KC_CAPS,          KC_LALT, KC_SPC,  LT(LY_NAV, KC_ESC),                  TD(MO_DANCE),     KC_RGUI, KC_RCTL
+                 KC_CAPS,          KC_LALT, KC_SPC,  LT(LY_NAV, KC_ESC),                  KC_SPC,     KC_RGUI, KC_RCTL
   ),
 
   [LY_SYM] = LAYOUT_alice(
@@ -89,82 +63,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
               XXXXXXX,          _______, KC_SPC , _______,                            KC_0   ,          XXXXXXX,          XXXXXXX
   ),
 };
-
-
-/* Return an integer that corresponds to what kind of tap dance should be executed.
- *
- * How to figure out tap dance state: interrupted and pressed.
- *
- * Interrupted: If the state of a dance is "interrupted", that means that another key has been hit
- *  under the tapping term. This is typically indicitive that you are trying to "tap" the key.
- *
- * Pressed: Whether or not the key is still being pressed. If this value is true, that means the tapping term
- *  has ended, but the key is still being pressed down. This generally means the key is being "held".
- *
- * One thing that is currenlty not possible with qmk software in regards to tap dance is to mimic the "permissive hold"
- *  feature. In general, advanced tap dances do not work well if they are used with commonly typed letters.
- *  For example "A". Tap dances are best used on non-letter keys that are not hit while typing letters.
- *
- * Good places to put an advanced tap dance:
- *  z,q,x,j,k,v,b, any function key, home/end, comma, semi-colon
- *
- * Criteria for "good placement" of a tap dance key:
- *  Not a key that is hit frequently in a sentence
- *  Not a key that is used frequently to double tap, for example 'tab' is often double tapped in a terminal, or
- *    in a web form. So 'tab' would be a poor choice for a tap dance.
- *  Letters used in common words as a double. For example 'p' in 'pepper'. If a tap dance function existed on the
- *    letter 'p', the word 'pepper' would be quite frustating to type.
- *
- * For the third point, there does exist the 'TD_DOUBLE_SINGLE_TAP', however this is not fully tested
- *
- */
-td_state_t cur_dance(qk_tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
-        // Key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
-        else return TD_SINGLE_HOLD;
-    } else if (state->count == 2) {
-        if (state->pressed) return TD_DOUBLE_HOLD;
-        else return TD_DOUBLE_TAP;
-    }
-    else return TD_UNKNOWN;
-}
-
-static td_tap_t mo_dance_state = {
-    .is_press_action = true,
-    .state = TD_NONE
-};
-
-void mo_dance_finished(qk_tap_dance_state_t *state, void *user_data) {
-    mo_dance_state.state = cur_dance(state);
-    switch (mo_dance_state.state) {
-        case TD_SINGLE_TAP: break;
-        case TD_SINGLE_HOLD: layer_on(LY_SYM); break;
-        case TD_DOUBLE_TAP: break;
-        case TD_DOUBLE_HOLD: layer_on(LY_NAV); break;
-        case TD_NONE: break;
-        case TD_UNKNOWN: break;
-    }
-}
-
-void mo_dance_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (mo_dance_state.state) {
-        case TD_SINGLE_TAP: break;
-        case TD_SINGLE_HOLD: layer_off(LY_SYM); break;
-        case TD_DOUBLE_TAP: break;
-        case TD_DOUBLE_HOLD: layer_off(LY_NAV); break;
-        case TD_NONE: break;
-        case TD_UNKNOWN: break;
-    }
-    mo_dance_state.state = TD_NONE;
-}
-
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [MO_DANCE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mo_dance_finished, mo_dance_reset),
-    [COLN_DANCE] = ACTION_TAP_DANCE_DOUBLE(KC_SCLN, KC_COLN),
-};
-
-/* End of tap dance definition */
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
