@@ -22,31 +22,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_ESC,      KC_TILD, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,     KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,        KC_EQL,  KC_BSPC,
     KC_VOLU,     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,              KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,           KC_LBRC, KC_RBRC, KC_BSLS,
     KC_VOLD,     KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,              KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN,        KC_QUOT,          KC_ENT,
-                 KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,              KC_UNDS, KC_N,    KC_M,    KC_COMM, KC_DOT,         KC_SLSH, KC_RSFT, _______,
-                 KC_CAPS,          KC_LALT, KC_SPC,  LT(LY_NAV, KC_ESC),                  KC_SPC,     KC_RGUI, KC_RCTL
+                 KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,     KC_UNDS, KC_N,    KC_M,    KC_COMM, KC_DOT,         KC_SLSH, KC_RSFT, KC_RGUI,
+                 KC_CAPS,          KC_LALT, KC_SPC,  LT(LY_NAV, KC_ESC),                  MO(LY_NAV),       KC_RGUI,                 KC_RCTL
   ),
 
   [LY_SYM] = LAYOUT_alice(
     _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
     _______,  _______, KC_QUOT, KC_DOT,  KC_PERC, KC_DQUO, KC_GRV,           KC_AMPR, KC_LT  , KC_LBRC, KC_RBRC, KC_GT  , _______, _______, _______,
     _______,  _______, KC_EXLM, KC_MINS, KC_PLUS, KC_EQL,  KC_HASH,          KC_PIPE, KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR, _______,          _______,
-              _______, KC_CIRC, KC_SLSH, KC_ASTR, KC_BSLS, KC_DOT,           KC_TILD, KC_DLR , KC_COLN, KC_LCBR, KC_QUES, KC_AT  , _______, _______,
+              _______, KC_CIRC, KC_SLSH, KC_ASTR, KC_BSLS, KC_DOT,  KC_TILD, KC_DLR , KC_COLN, KC_LCBR, KC_QUES, KC_AT  , _______, _______,
               _______,          _______, _______, _______,                            _______,          _______,          _______
   ),
 
   [LY_NAV] = LAYOUT_alice(
-    _______,  _______, KC_F1,     KC_F2,        KC_F3,       KC_F4,     KC_F5,     KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,   KC_F12,  KC_DEL,
-    _______,  _______, A(KC_F4),  KC_MPRV,     KC_MPLY,      KC_MNXT,   C(S(KC_T)),         KC_ESC , _______, _______,  _______, _______,  _______, _______, _______,
-    _______,  _______, G(S(KC_S)), G(S(KC_S)),    ALT_TAB,     GUI_SPACE, SPAM_RIGHT,       KC_LEFT, KC_DOWN, KC_UP   , KC_RGHT, _______,  _______,          _______,
-              _______, C(KC_Z),   C(KC_X),      C(KC_C),     C(KC_V),   SPAM_LEFT,          _______, _______, _______,  _______, _______,  _______, _______, _______,
-              _______,            _______,      _______,     _______,                                _______,                    _______,           QK_BOOT
+    _______,  _______, KC_F1,     KC_F2,        KC_F3,       KC_F4,     KC_F5,       KC_F6,   KC_F7,   KC_F8,   KC_F9,    KC_F10,  KC_F11,   KC_F12,  KC_DEL,
+    _______,  _______, A(KC_F4),  KC_MPRV,      KC_MPLY,     KC_MNXT,   C(S(KC_T)),           _______, KC_ESC , KC_UP   , _______, _______,  _______, _______, _______,
+    _______,  _______, _______,   G(S(KC_S)),   ALT_TAB,     GUI_SPACE, _______,              KC_HOME, KC_LEFT, KC_DOWN , KC_RGHT, KC_END ,  _______,          _______,
+              _______, _______,   _______,      _______,     _______,   _______,     _______, _______, _______,  _______, _______,  _______, _______, _______,
+              _______,            _______,      _______,     _______,                                  _______,                    _______,           QK_BOOT
   ),
 
   [LY_NUM] = LAYOUT_alice(
-    _______,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PLUS, KC_MINS, KC_ASTR, KC_SLSH, XXXXXXX, XXXXXXX, BSPC_DEL,
+    _______,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PLUS, KC_MINS, KC_ASTR, KC_SLSH, XXXXXXX, XXXXXXX, XXXXXXX,
     _______,  XXXXXXX, KC_TAB , KC_UP  , KC_ENT , XXXXXXX, XXXXXXX,          KC_7   , KC_8   , KC_9   , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
     _______,  XXXXXXX, KC_LEFT, KC_DOWN, KC_RGHT, XXXXXXX, XXXXXXX,          KC_4   , KC_5   , KC_6   , KC_TAB , XXXXXXX, XXXXXXX,          KC_ENT ,
-              XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          KC_DOT , KC_1   , KC_2   , KC_3   , KC_ENT , XXXXXXX, XXXXXXX, XXXXXXX,
+              XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_DOT , KC_1   , KC_2   , KC_3   , KC_ENT , XXXXXXX, XXXXXXX, XXXXXXX,
               XXXXXXX,          _______, KC_SPC , _______,                            KC_0   ,          XXXXXXX,          XXXXXXX
   ),
 };
