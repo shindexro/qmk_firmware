@@ -17,7 +17,7 @@ BACKLIGHT_ENABLE = yes      # Enable keyboard backlight functionality
 RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
 AUDIO_ENABLE = no           # Audio output
 WS2812_DRIVER = spi
-ENCODER_ENABLE = yes
+ENCODER_ENABLE = no
 TAP_DANCE_ENABLE = no
 
 # Enter lower-power sleep mode when on the ChibiOS idle thread
