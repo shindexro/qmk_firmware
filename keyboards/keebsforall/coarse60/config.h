@@ -91,3 +91,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_ONESHOT
 
 #define SLEEP_LED_GPT_DRIVER GPTD1
+
+#define LEADER_TIMEOUT 250
+#define LEADER_PER_KEY_TIMING
