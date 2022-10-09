@@ -94,3 +94,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define LEADER_TIMEOUT 250
 #define LEADER_PER_KEY_TIMING
+
+#define KC_UNDO  LCTL(KC_Z)
+#define KC_COPY  LCTL(KC_C)
+#define KC_CUT   LCTL(KC_X)
+#define KC_PASTE LCTL(KC_V)
