@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "features/select_word.h"
 
 
 enum custom_keycodes {
