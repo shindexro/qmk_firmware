@@ -56,6 +56,30 @@ void trigger_code(uint16_t keycode) {
   unregister_code(keycode);
 }
 
+void trigger_undo(void) {
+  register_code(KC_LCTL);
+  trigger_code(KC_Z);
+  unregister_code(KC_LCTL);
+}
+
+void trigger_cut(void) {
+  register_code(KC_LCTL);
+  trigger_code(KC_X);
+  unregister_code(KC_LCTL);
+}
+
+void trigger_copy(void) {
+  register_code(KC_LCTL);
+  trigger_code(KC_C);
+  unregister_code(KC_LCTL);
+}
+
+void trigger_paste(void) {
+  register_code(KC_LCTL);
+  trigger_code(KC_V);
+  unregister_code(KC_LCTL);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     switch (keycode) {
@@ -145,26 +169,26 @@ void matrix_scan_user(void) {
     leader_end();
 
     SEQ_ONE_KEY(KC_P) {
-      trigger_code(KC_PASTE);
+      trigger_paste();
     }
     SEQ_ONE_KEY(KC_U) {
-      trigger_code(KC_UNDO);
+      trigger_undo();
     }
     SEQ_TWO_KEYS(KC_D, KC_D) {
       select_line();
-      trigger_code(KC_CUT);
+      trigger_cut();
     }
     SEQ_TWO_KEYS(KC_Y, KC_Y) {
       select_line();
-      trigger_code(KC_COPY);
+      trigger_copy();
     }
     SEQ_TWO_KEYS(KC_D, KC_W) {
       select_word();
-      trigger_code(KC_CUT);
+      trigger_cut();
     }
     SEQ_TWO_KEYS(KC_Y, KC_W) {
       select_word();
-      trigger_code(KC_COPY);
+      trigger_copy();
     }
     SEQ_TWO_KEYS(KC_F, KC_H) {
       register_code(KC_LCTL);
@@ -180,7 +204,7 @@ void matrix_scan_user(void) {
       register_code(KC_LCTL);
       trigger_code(KC_A);
       unregister_code(KC_LCTL);
-      trigger_code(KC_DEL);
+      trigger_cut();
     }
   }
 }
