@@ -20,8 +20,11 @@ WS2812_DRIVER = spi
 ENCODER_ENABLE = no
 TAP_DANCE_ENABLE = no
 LEADER_ENABLE = yes
+DEFERRED_EXEC_ENABLE = yes
 
 # Enter lower-power sleep mode when on the ChibiOS idle thread
 # OPT_DEFS += -DCORTEX_ENABLE_WFI_IDLE=TRUE
 
 LAYOUTS = alice alice_split_bs
+
+SRC += features/mouse_turbo_click.c
